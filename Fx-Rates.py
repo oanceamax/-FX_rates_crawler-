@@ -1,6 +1,9 @@
-#Copyright Maximilian Oancea (2018) All rights reservered
+#Copyright Maximilian Oancea (2018) All rights reservered.
 
 from selenium import webdriver
+import os
+import time
+
 
 driver = webdriver.Firefox()
 driver.get("https://www.brd.ro/en/exchange-rates")
@@ -69,9 +72,9 @@ with open('Cursuri.csv','a') as output:
           output.write(str(ingb))
           
 driver.get("https://www.cec.ro/curs-valutar")
-fxc_cecc = driver.find_elements_by_xpath('//*[@id="block-system-main"]/div/div/section/div[3]/table/tbody/tr[6]/td[2]')
-fxb_cecc = driver.find_elements_by_xpath('//*[@id="block-system-main"]/div/div/section/div[3]/table/tbody/tr[6]/td[4]')
-fxs_cecc = driver.find_elements_by_xpath('//*[@id="block-system-main"]/div/div/section/div[3]/table/tbody/tr[6]/td[5]')  
+fxc_cecc = driver.find_elements_by_xpath('//*[@id="block-system-main"]/div/div/section/div[3]/table/tbody/tr[5]/td[2]')
+fxb_cecc = driver.find_elements_by_xpath('//*[@id="block-system-main"]/div/div/section/div[3]/table/tbody/tr[5]/td[4]')
+fxs_cecc = driver.find_elements_by_xpath('//*[@id="block-system-main"]/div/div/section/div[3]/table/tbody/tr[5]/td[5]')  
 num_page_itmes = len(fxc_cecc)
 with open('Cursuri.csv','a') as output:
       for i in range(num_page_itmes): 
@@ -102,32 +105,37 @@ with open('Cursuri.csv','a') as output:
           pirb = pirb.replace("-",",")
           print(pirb)
           output.write(str(pirb))
-          
-driver.get("https://www.raiffeisen.ro/persoane-fizice/curs-valutar/")
-fxc_rbrb = driver.find_elements_by_xpath('//*[@id="_0"]/td[2]')
-fxb_rbrb = driver.find_elements_by_xpath('//*[@id="_0"]/td[4]')
-fxs_rbrb = driver.find_elements_by_xpath('//*[@id="_0"]/td[5]')  
-num_page_itmes = len(fxc_rbrb)
-with open('Cursuri.csv','a') as output:
-      for i in range(num_page_itmes): 
-          rbrb ='\n'+"Raiffeisen Bank" + '\n'+ fxc_rbrb[i].text + " - " +fxb_rbrb[i].text +" - " + fxs_rbrb[i].text 
-          rbrb = rbrb.replace(",",".")
-          rbrb = rbrb.replace("-",",")
-          print(rbrb)
-          output.write(str(rbrb))
-          
-driver.get("https://www.bcr.ro/ro/curs-valutar")
-fxc_bcr= driver.find_elements_by_xpath('//*[@id="content"]/div[4]/div/div/div/div/div[1]/div/div/div/table/tbody/tr[1]/td[2]')
-fxb_bcr = driver.find_elements_by_xpath('//*[@id="content"]/div[4]/div/div/div/div/div[1]/div/div/div/table/tbody/tr[1]/td[3]')
-fxs_bcr = driver.find_elements_by_xpath('//*[@id="content"]/div[4]/div/div/div/div/div[1]/div/div/div/table/tbody/tr[1]/td[4]')  
-num_page_itmes = len(fxc_bcr)
-with open('Cursuri.csv','a') as output:
-      for i in range(num_page_itmes): 
-          bcr ='\n'+"Banca Comerciala Romana" + '\n'+ fxc_bcr[i].text + " - " +fxb_bcr[i].text +" - " + fxs_bcr[i].text 
-          bcr = bcr.replace(",",".")
-          bcr = bcr.replace("-",",")
-          print(bcr)
-          output.write(str(bcr))
-          
+try:          
+    driver.get("https://www.raiffeisen.ro/persoane-fizice/curs-valutar/")
+    fxc_rbrb = driver.find_elements_by_xpath('//*[@id="_0"]/td[2]')
+    fxb_rbrb = driver.find_elements_by_xpath('//*[@id="_0"]/td[4]')
+    fxs_rbrb = driver.find_elements_by_xpath('//*[@id="_0"]/td[5]')  
+    num_page_itmes = len(fxc_rbrb)
+    with open('Cursuri.csv','a') as output:
+          for i in range(num_page_itmes): 
+              rbrb ='\n'+"Raiffeisen Bank" + '\n'+ fxc_rbrb[i].text + " - " +fxb_rbrb[i].text +" - " + fxs_rbrb[i].text 
+              rbrb = rbrb.replace(",",".")
+              rbrb = rbrb.replace("-",",")
+              print(rbrb)
+              output.write(str(rbrb))
+except:
+    pass
+try:           
+    driver.get("https://www.bcr.ro/ro/curs-valutar")
+    fxc_bcr= driver.find_elements_by_xpath('//*[@id="content"]/div[4]/div/div/div/div/div[1]/div/div/div/table/tbody/tr[1]/td[2]')
+    fxb_bcr = driver.find_elements_by_xpath('//*[@id="content"]/div[4]/div/div/div/div/div[1]/div/div/div/table/tbody/tr[1]/td[3]')
+    fxs_bcr = driver.find_elements_by_xpath('//*[@id="content"]/div[4]/div/div/div/div/div[1]/div/div/div/table/tbody/tr[1]/td[4]')  
+    num_page_itmes = len(fxc_bcr)
+    with open('Cursuri.csv','a') as output:
+          for i in range(num_page_itmes): 
+              bcr ='\n'+"Banca Comerciala Romana" + '\n'+ fxc_bcr[i].text + " - " +fxb_bcr[i].text +" - " + fxs_bcr[i].text 
+              bcr = bcr.replace(",",".")
+              bcr = bcr.replace("-",",")
+              print(bcr)
+              output.write(str(bcr))
+except:
+    pass          
           
 driver.close()
+path1 = 'C:\Data\Cursuri\\' + time.strftime("%Y%m%d%H%M%S.csv")
+os.rename("Cursuri.csv", path1)
